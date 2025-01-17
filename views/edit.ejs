@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate.ejs")%>
+<div class="row">
+    <div class="col-8 offset-2">
+
+<body>
+    <h1>Edit Your List Here</h1>
+    <br><br>
+    <form action="/listings/<%=data._id%>?_method=patch" method="post">
+        <div>
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" placeholder="<%=data.title%>" value="<%=data.title%>" class="form-control">    
+        </div>
+        <br><br>
+        <div>
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" placeholder="<%=data.description%>" class="form-control"><%=data.description%></textarea>
+        </div>
+        <br><br>
+        <div>
+            <label for="image" class="form-label">Image</label>
+            <input type="text" name="image" placeholder="<%=data.image%>" value="<%=data.image%>" class="form-control">
+        </div>
+        <br><br>
+        <div>
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="price" placeholder="<%=data.price%>" value="<%=data.price%>" class="form-control">
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-md-8">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="location" placeholder="<%=data.location%>" value="<%=data.location%>" class="form-control">
+            </div>
+            <br><br>
+            <div class="col-md-4">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" name="country" placeholder="<%=data.country%>" value="<%=data.country%>" class="form-control">
+            </div>
+        </div>
+        
+        <br><br>
+        <button class="btn btn-dark">UPDATE!</button>
+        <br><br>
+    </form>
+</body>
+</div>
+</div>

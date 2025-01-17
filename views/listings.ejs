@@ -1,0 +1,37 @@
+<% layout("/layouts/boilerplate.ejs")%>
+<link rel="stylesheet" href="../public/css/listingstyle.css">
+<body>
+    <div class="allcards">
+        <% for (list of alllisting){ %>
+            <!-- <div>
+                <h2><%=list.title%></h2>
+                <img src="<%=list.image%>">
+                <h2><%=list.price%></h2>
+                <a href="/listings/<%=list._id%>">Detailed View</a>
+                <form action="/listings/<%=list._id%>/edit" method="get">
+                    <button>EDIT</button>
+                </form>
+                <form action="/listings/<%=list._id%>/delete?_method=delete" method="post">
+                    <button>DELETE</button>
+                </form>
+            </div>
+            <hr> -->
+            <a href="/listings/<%=list._id%>" class="anchorcards">
+                <div class="card" style="width: 20rem;">
+                    <img src="<%=list.image%>" class="card-img-top" style="height:18rem">
+                    <div class="card-body">
+                      <h4><%=list.title%></h4>
+                      <h6><%=list.location%></h6>
+                      <h6>&#8377 <%=list.price%></h6>
+                    </div>
+                  </div>
+            </a>
+            <br>
+        <% } %>
+
+    </div>
+    
+    <form action="/listings/new" method="get">
+        <button>ADD NEW!</button>
+    </form>
+</body>

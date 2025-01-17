@@ -1,0 +1,17 @@
+<% layout("/layouts/boilerplate.ejs")%>
+<body>
+    <div>
+        <h1><%=rec.title%></h1>
+        <img src="<%=rec.image%>" height="300px" width="300px">
+        <p><%=rec.description%></p>
+        <h2>&#8377 <%=rec.price%></h2>
+        <h3><%=rec.location%></h3>
+        <h3><%=rec.country%></h3>
+        <form action="/listings/<%=rec._id%>/edit" method="get">
+            <button>EDIT</button>
+        </form>
+        <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post">
+            <button>DELETE</button>
+        </form>
+    </div>
+</body>
