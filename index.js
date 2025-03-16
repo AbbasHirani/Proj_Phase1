@@ -13,8 +13,23 @@ app.use(methodOverride("_method"));
 app.set("views", path.join(__dirname,"views"));
 app.set("view engine","ejs");
 app.engine("ejs",ejsMate);
-
+app.use(express.static("public"));
+const wrapAsync = require("./utils/wrapSync.js");
+const ExpressEroor = require("./utils/ExpressError.js");
+const {listingSchema,reviewSchema} = require("./schema.js");
+const Review = require("./models/review.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
+const validateReview  = (req,res,next)=>{
+    let {error}= reviewSchema.validate(req.body);
+        if(error){
+            let errMsg = error.details.map((el)=> el.message).join(",");
+            throw new ExpressEroor(400,errMsg)
+        }else{
+            next();
+        }
+        
+}
 
 main().then(()=>{
     console.log("connected to db");
@@ -63,15 +78,15 @@ app.get("/listings/:id" ,async(req,res)=>{
 })
 
 //CREATE ROUTE
-app.post("/listings",async(req,res)=>{
-    
-    let newListing =new Listing(req.body);
-     newListing.save().then((ress)=>{ 
-            res.send(ress);    
-        //res.redirect("/listings");
-        }).catch((err)=>{
-            res.render("err.ejs", {err});
-        });
+app.post("/listings", wrapAsync(async (req, res,next) => {
+        let result= listingSchema.validate(req.body);
+        console.log(result);
+        const newListing = new Listing(req.body);
+        await newListing.save();
+        res.redirect("/listings");
+
+  })
+);
 
                         // OR
 
@@ -89,7 +104,6 @@ app.post("/listings",async(req,res)=>{
     // }).catch((err)=>{
     //     res.render("err.ejs", {err});
     // });
-});
 
 app.get("/listings/:id/edit",async(req,res)=>{
     let {id} = req.params;
@@ -118,6 +132,28 @@ app.delete("/listings/:id/delete",async(req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 });
+
+//reviews
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
+    let {id} = req.params;
+    let listing =  await Listing.findById(id);
+    console.log(req.body.review)
+    let newRev = new Review(req.body.review);
+    
+
+    listing.reviews.push(newRev);
+    
+    await newRev.save();
+    await listing.save();
+    res.redirect("/listings");  
+}));
+
+app.use((err,req,res,next)=>{
+    let{ statusCode = 500,message = "something went wrong"} = err;
+    console.log(message);
+    //res.send("something went wrong");
+    res.render("error.ejs" , {message});  
+})
 
 app.listen(8080,()=>{
     console.log("app is listening to port 8080");

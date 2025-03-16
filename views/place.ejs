@@ -1,17 +1,59 @@
 <% layout("/layouts/boilerplate.ejs")%>
 <body>
-    <div>
+    <div class="col-8 offset-3 row mt-3">
         <h1><%=rec.title%></h1>
-        <img src="<%=rec.image%>" height="300px" width="300px">
+        <img src="<%=rec.image%>" 
+        class="card-img-top show-img"
+        >
         <p><%=rec.description%></p>
         <h2>&#8377 <%=rec.price%></h2>
         <h3><%=rec.location%></h3>
         <h3><%=rec.country%></h3>
         <form action="/listings/<%=rec._id%>/edit" method="get">
-            <button>EDIT</button>
+            <button class="btn btn-dark offset-5 mb-3 mt-3">EDIT</button>
         </form>
+        <br/>
         <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post">
-            <button>DELETE</button>
+            <button class="btn btn-dark offset-5">DELETE</button>
         </form>
+    </div>
+    <br>
+    <hr/>
+    <br>
+    <div class="col-8 offset-3 mb-4 ">
+        <h4>Leave Us a Review!</h4>
+        <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation">
+            <div class="mb-3 mt-3">
+                <label for="ratings" class="form-label">Rating</label>
+                <input type="range" min="1" max="5" class="form-control"  id="ratings" name="review[ratings]">
+                
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea name="review[comment]"  class="form-control" id="comment" cols="38" rows="5" required></textarea>
+                <div class="invalid-feedback">Please Add Comments For Review</div>
+            </div> 
+            <button class="btn btn-dark offset-5">Submit</button>
+        </form>
+        <script>
+            (() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+        </script>
     </div>
 </body>

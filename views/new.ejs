@@ -3,42 +3,65 @@
     <div class="col-8 offset-2">
 <body>
     <h1>PUBLISH HERE!</h1>
-    <form action="/listings" method="post">
+    <form action="/listings" method="post" novalidate class="needs-validation" >
         <div>
             <label for="title" class="form-label">Title</label>
-            <input type="text" name="title" placeholder="Enter title" class="form-control">
+            <input type="text" name="title" placeholder="Enter title" class="form-control" required/>
+            <div class="invalid-feedback">Enter correct Title</div>
         </div>
         <br><br>
         <div>
             <label for="description" class="form-label">Description</label>
-            <textarea name="description" placeholder="Enter Description" class="form-control"></textarea>
+            <textarea name="description" placeholder="Enter Description" class="form-control" required></textarea>
+            <div class="invalid-feedback">Enter correct Description</div>
         </div>
         <br><br>
         <div>
             <label for="image" class="form-label">Image</label>
-            <input type="text" name="image" placeholder="Enter Image Link/URL" class="form-control">
+            <input type="text" name="image" placeholder="Enter Image Link/URL" class="form-control"/>
+            <div class="invalid-feedback">Enter Correct URL</div>
         </div>
         <br><br>
         <div>
-            <label for="price" class="form-label">Price</label>
-            <input type="number" name="price" placeholder="Enter Price" class="form-control">
+            <label for="price" class="form-label"> Price</label>
+            <input  name="price" placeholder="Enter Price" class="form-control" required/>
+            <div class="invalid-feedback">Enter correct Price</div>
         </div>
         <br><br>
         <div class="row">
             <div class="col-md-4">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" name="location" placeholder="Enter location" class="form-control">
+                <input type="text" name="location" placeholder="Enter location" class="form-control" required/>
+                <div class="invalid-feedback">Enter correct Price</div>
             </div>
             <br><br>
             <div class="col-md-8">
                 <label for="country" class="form-label">Country</label>
-                <input type="text" name="country" placeholder="Enter Country" class="form-control">
+                <input type="text" name="country" placeholder="Enter Country" class="form-control" required />
+                <div class="invalid-feedback">Enter correct Country</div>
             </div>
         </div>
         <br><br>
         <button class="btn btn-dark">ADD!</button>
         <br><br>
     </form>
+    <script>
+        (() => {
+            'use strict'
+        
+            const forms = document.querySelectorAll('.needs-validation');
+        
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+        </script>
 </body>
 </div>
 </div>
