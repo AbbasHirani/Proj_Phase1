@@ -82,7 +82,7 @@ footer
     align-items: center;
     
 }
-.card{
+.listing-card{
     margin: 1rem;
     border: none !important;
 }
@@ -94,7 +94,7 @@ footer
     object-fit: cover !important;
 }
 
-.card-body{
+.listing-card-body{
     margin: 0 !important;  
     background-color:bisque; 
     border-bottom-left-radius: 1rem;

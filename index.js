@@ -16,12 +16,23 @@ app.engine("ejs",ejsMate);
 app.use(express.static("public"));
 const wrapAsync = require("./utils/wrapSync.js");
 const ExpressEroor = require("./utils/ExpressError.js");
-const {listingSchema,reviewSchema} = require("./schema.js");
+const {ListingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 const validateReview  = (req,res,next)=>{
     let {error}= reviewSchema.validate(req.body);
+        if(error){
+            let errMsg = error.details.map((el)=> el.message).join(",");
+            throw new ExpressEroor(400,errMsg)
+        }else{
+            next();
+        }
+        
+}
+
+const validateListing  = (req,res,next)=>{
+    let {error}= ListingSchema.validate(req.body);
         if(error){
             let errMsg = error.details.map((el)=> el.message).join(",");
             throw new ExpressEroor(400,errMsg)
@@ -73,13 +84,13 @@ app.get("/listings/new",(req,res)=>{
 //SHOW ROUTE
 app.get("/listings/:id" ,async(req,res)=>{
     let {id} = req.params;
-    let rec = await Listing.findById(id);
+    let rec = await Listing.findById(id).populate("reviews");
     res.render("place.ejs" , {rec});
 })
 
 //CREATE ROUTE
 app.post("/listings", wrapAsync(async (req, res,next) => {
-        let result= listingSchema.validate(req.body);
+        let result= ListingSchema.validate(req.body);
         console.log(result);
         const newListing = new Listing(req.body);
         await newListing.save();
@@ -147,6 +158,15 @@ app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     await listing.save();
     res.redirect("/listings");  
 }));
+
+//delete review route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+    let {id,reviewId} = req.params;
+    await Review.findByIdAndDelete(reviewId);
+    await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
+    console.log("working");
+    res.redirect("/listings");
+}))
 
 app.use((err,req,res,next)=>{
     let{ statusCode = 500,message = "something went wrong"} = err;
