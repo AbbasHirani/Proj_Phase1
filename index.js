@@ -20,27 +20,9 @@ const {ListingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
-const validateReview  = (req,res,next)=>{
-    let {error}= reviewSchema.validate(req.body);
-        if(error){
-            let errMsg = error.details.map((el)=> el.message).join(",");
-            throw new ExpressEroor(400,errMsg)
-        }else{
-            next();
-        }
-        
-}
+const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
 
-const validateListing  = (req,res,next)=>{
-    let {error}= ListingSchema.validate(req.body);
-        if(error){
-            let errMsg = error.details.map((el)=> el.message).join(",");
-            throw new ExpressEroor(400,errMsg)
-        }else{
-            next();
-        }
-        
-}
 
 main().then(()=>{
     console.log("connected to db");
@@ -56,6 +38,10 @@ app.get("/",(req,res)=>{
     res.send("WORKING");
 })
 
+app.use("/listings" , listings);
+
+app.use("/listings/:id/reviews" , reviews);
+
 app.get("/test",async (req,res)=>{
     let list = new Listing({
         title : "Test",
@@ -69,35 +55,6 @@ app.get("/test",async (req,res)=>{
     await list.save();
     res.send("updated");
 });
-
-//INDEX ROUTE
-app.get("/listings",async (req,res)=>{
-    let alllisting = await Listing.find();
-    res.render("listings.ejs" , { alllisting });
-});
-
-//NEW ROUTE
-app.get("/listings/new",(req,res)=>{
-    res.render("new.ejs");
-})
-
-//SHOW ROUTE
-app.get("/listings/:id" ,async(req,res)=>{
-    let {id} = req.params;
-    let rec = await Listing.findById(id).populate("reviews");
-    res.render("place.ejs" , {rec});
-})
-
-//CREATE ROUTE
-app.post("/listings", wrapAsync(async (req, res,next) => {
-        let result= ListingSchema.validate(req.body);
-        console.log(result);
-        const newListing = new Listing(req.body);
-        await newListing.save();
-        res.redirect("/listings");
-
-  })
-);
 
                         // OR
 
@@ -115,58 +72,6 @@ app.post("/listings", wrapAsync(async (req, res,next) => {
     // }).catch((err)=>{
     //     res.render("err.ejs", {err});
     // });
-
-app.get("/listings/:id/edit",async(req,res)=>{
-    let {id} = req.params;
-    let data = await  Listing.findById(id);
-    console.log(data);
-    res.render("edit.ejs",{data});
-});
-
-app.patch("/listings/:id",async(req,res)=>{
-    let editListing = req.body;
-    let {id} = req.params;
-    let {title : newtitle,description:newdescription,image:newimage,price:newprice,location:newlocation,country:newcountry} = req.body;
-    await Listing.findByIdAndUpdate(id , {
-        title : newtitle,
-        description : newdescription,
-        image : newimage,
-        price : newprice,
-        location : newlocation,
-        country : newcountry
-    });
-    res.redirect("/listings");
-})
-
-app.delete("/listings/:id/delete",async(req,res)=>{
-    let {id} = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-});
-
-//reviews
-app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
-    let {id} = req.params;
-    let listing =  await Listing.findById(id);
-    console.log(req.body.review)
-    let newRev = new Review(req.body.review);
-    
-
-    listing.reviews.push(newRev);
-    
-    await newRev.save();
-    await listing.save();
-    res.redirect("/listings");  
-}));
-
-//delete review route
-app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
-    let {id,reviewId} = req.params;
-    await Review.findByIdAndDelete(reviewId);
-    await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
-    console.log("working");
-    res.redirect("/listings");
-}))
 
 app.use((err,req,res,next)=>{
     let{ statusCode = 500,message = "something went wrong"} = err;
