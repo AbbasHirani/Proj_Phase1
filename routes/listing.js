@@ -31,7 +31,13 @@ router.get("/new",(req,res)=>{
 router.get("/:id" ,async(req,res)=>{
     let {id} = req.params;
     let rec = await Listing.findById(id).populate("reviews");
-    res.render("place.ejs" , {rec});
+    if(!rec){
+        req.flash("error","The Listing does not exist!");
+        res.redirect("/listings");
+    }else{
+        res.render("place.ejs" , {rec});
+    }
+    
 })
 
 //CREATE ROUTE
@@ -40,6 +46,7 @@ router.post("/", wrapAsync(async (req, res,next) => {
     console.log(result);
     const newListing = new Listing(req.body);
     await newListing.save();
+    req.flash("success","new lisitng created!");
     res.redirect("/listings");
 
 }));
@@ -47,8 +54,14 @@ router.post("/", wrapAsync(async (req, res,next) => {
 router.get("/:id/edit",async(req,res)=>{
     let {id} = req.params;
     let data = await  Listing.findById(id);
+    if(!data){
+        req.flash("error","The Listing does not exist!");
+        res.redirect("/listings");
+    }else{
+        res.render("edit.ejs" , {data});
+    }
     console.log(data);
-    res.render("edit.ejs",{data});
+    //res.render("edit.ejs",{data});
 });
 
 router.patch("/:id",async(req,res)=>{
@@ -63,12 +76,14 @@ router.patch("/:id",async(req,res)=>{
         location : newlocation,
         country : newcountry
     });
+    req.flash("success","lisitng Updated!");
     res.redirect("/listings");
 })
 
 router.delete("/:id/delete",async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success","lisitng Deleted!");
     res.redirect("/listings");
 });
 

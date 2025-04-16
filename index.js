@@ -20,9 +20,34 @@ const {ListingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
+const flash = require("connect-flash");
+
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 
+const session = require("express-session");
+
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser());
+
+const sessionOptions = {
+    secret:"secretString",
+    resave : false,
+    saveUninitialized : true,
+    expires : Date.now() + 7 *24*60*60*1000,
+    maxAge : 7 *24*60*60*1000,
+    httpOnly : true
+};
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
 
 main().then(()=>{
     console.log("connected to db");
@@ -36,6 +61,7 @@ async function main() {
 
 app.get("/",(req,res)=>{
     res.send("WORKING");
+    console.log(req.cookies);
 })
 
 app.use("/listings" , listings);
