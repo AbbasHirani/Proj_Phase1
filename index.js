@@ -19,11 +19,15 @@ const ExpressEroor = require("./utils/ExpressError.js");
 const {ListingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 const flash = require("connect-flash");
 
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const session = require("express-session");
 
@@ -42,6 +46,13 @@ const sessionOptions = {
 
 app.use(session(sessionOptions));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
@@ -64,9 +75,18 @@ app.get("/",(req,res)=>{
     console.log(req.cookies);
 })
 
-app.use("/listings" , listings);
+app.get("/demouser" , async (req,res)=>{
+    let fakeuser = new User({
+        email : "student@gmail.com",
+        username : "student",
+    });
+    let registeredUser = await User.register(fakeuser,"test");
+    res.send(registeredUser);
+});
 
-app.use("/listings/:id/reviews" , reviews);
+app.use("/listings" , listingRouter);
+app.use("/listings/:id/reviews" , reviewRouter);
+app.use("/" , userRouter);
 
 app.get("/test",async (req,res)=>{
     let list = new Listing({

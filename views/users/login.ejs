@@ -1,0 +1,41 @@
+<% layout("/layouts/boilerplate.ejs")%>
+
+<h1 class="col-8 offset-2 mb-3">Login on Wanderlust!!</h1>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <form action="/login" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" placeholder="Enter username" class="form-control" required/>
+                <div class="invalid-feedback">Enter correct Username</div>
+                <div class="valid-feedback">Username looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" placeholder="Enter Password" class="form-control" required/>
+                <div class="invalid-feedback">Enter correct Password</div>
+                <div class="valid-feedback">Password looks good!</div>
+            </div>
+            <button class="btn btn-success">Login!</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    (() => {
+        'use strict'
+    
+        const forms = document.querySelectorAll('.needs-validation');
+    
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+    </script>
