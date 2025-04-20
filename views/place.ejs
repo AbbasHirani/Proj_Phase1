@@ -3,25 +3,31 @@
     <div class="col-8 offset-3 row mt-3">
         <h1><%=rec.title%></h1>
         <img src="<%=rec.image%>" 
-        class="card-img-top show-img"
-        >
-        <p><%=rec.description%></p>
-        <h2>&#8377 <%=rec.price%></h2>
-        <h3><%=rec.location%></h3>
-        <h3><%=rec.country%></h3>
-        <form action="/listings/<%=rec._id%>/edit" method="get">
-            <button class="btn btn-dark offset-5 mb-3 mt-3">EDIT</button>
-        </form>
-        <br/>
-        <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post">
-            <button class="btn btn-dark offset-5">DELETE</button>
-        </form>
+        class="card-img-top show-img">
+        <br>
+        <p class="card-text"><b>Owned By :- <%=rec.owner.username%></b></p>
+        <p class="card-text"><%=rec.description%></p>
+        <h2 class="card-text">&#8377 <%=rec.price%></h2>
+        <h3 class="card-text"><%=rec.location%></h3>
+        <h3 class="card-text"><%=rec.country%></h3>
+
+        <% if(currUser && currUser._id.equals(rec.owner._id)){ %>
+            <form action="/listings/<%=rec._id%>/edit" method="get">
+                <button class="btn btn-dark offset-5 mb-3 mt-3">EDIT</button>
+            </form>
+            <br/>
+            <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post">
+                <button class="btn btn-dark offset-5">DELETE</button>
+            </form>
+        <% } %>
     </div>
     <br>
     <hr/>
     <br>
     <div class="col-8 offset-3 mb-4 ">
         <h4>Leave Us a Review!</h4>
+        <%if(currUser){%>
+            <%=currUser%>
         <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation">
             <div class="mb-3 mt-3">
                 <label for="ratings" class="form-label">Rating</label>
@@ -35,26 +41,32 @@
             </div> 
             <button class="btn btn-dark offset-5">Submit</button>
         </form>
-
-        <hr/>
-
         
-        <p><b>All Reviews!</b></p>
-        <div class="row">
-            <% for (review of rec.reviews){ %>
-                <div class="card col-5 mb-3 ms-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Name</h5>
-                        <p class="card-text"><%=review.comment%></p>
-                        <p class="card-text"><%=review.ratings%> stars</p>
-                        <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post">
-                            <button class="btn btn-dark btn-sm">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            <% } %>
-        </div>
+        <hr/>
+        <%}else{%>
+            <a href="/signup"><b>Login / SignUp to add Reviews!</b></a>
+        <%}%>
 
+        <%if(rec.reviews.length){%>
+            <p><b>All Reviews!</b></p>
+            <div class="row">
+                <% for (review of rec.reviews){ %>
+                    <div class="card col-5 mb-3 ms-3">
+                        <div class="card-body">
+                            
+                            <h5 class="card-title">@<%=review.author.username%></h5>
+                            <p class="card-text"><%=review.comment%></p>
+                            <p class="card-text"><%=review.ratings%> stars</p>
+                            <%if(review.author._id.equals(currUser._id)){%>
+                            <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post">
+                                <button class="btn btn-dark btn-sm">Delete</button>
+                            </form>
+                            <%}%>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <%}%>
 
         <script>
             (() => {
