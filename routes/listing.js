@@ -4,6 +4,7 @@ const {ListingSchema,reviewSchema} = require("../schema.js");
 const wrapAsync = require("../utils/wrapSync.js");
 const ExpressEroor = require("../utils/ExpressError.js");
 const Listing = require("../models/listing");
+const {isloggedin} = require("../middleware.js");
 
 const validateListing  = (req,res,next)=>{
     let {error}= ListingSchema.validate(req.body);
@@ -23,7 +24,7 @@ router.get("/",async (req,res)=>{
 });
 
 //NEW ROUTE
-router.get("/new",(req,res)=>{
+router.get("/new",isloggedin,(req,res)=>{
     res.render("new.ejs");
 })
 
@@ -41,7 +42,7 @@ router.get("/:id" ,async(req,res)=>{
 })
 
 //CREATE ROUTE
-router.post("/", wrapAsync(async (req, res,next) => {
+router.post("/",isloggedin, wrapAsync(async (req, res,next) => {
     let result= ListingSchema.validate(req.body);
     console.log(result);
     const newListing = new Listing(req.body);
@@ -51,7 +52,7 @@ router.post("/", wrapAsync(async (req, res,next) => {
 
 }));
 
-router.get("/:id/edit",async(req,res)=>{
+router.get("/:id/edit",isloggedin,async(req,res)=>{
     let {id} = req.params;
     let data = await  Listing.findById(id);
     if(!data){
@@ -64,7 +65,7 @@ router.get("/:id/edit",async(req,res)=>{
     //res.render("edit.ejs",{data});
 });
 
-router.patch("/:id",async(req,res)=>{
+router.patch("/:id",isloggedin,async(req,res)=>{
     let editListing = req.body;
     let {id} = req.params;
     let {title : newtitle,description:newdescription,image:newimage,price:newprice,location:newlocation,country:newcountry} = req.body;
@@ -80,7 +81,7 @@ router.patch("/:id",async(req,res)=>{
     res.redirect("/listings");
 })
 
-router.delete("/:id/delete",async(req,res)=>{
+router.delete("/:id/delete",isloggedin,async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success","lisitng Deleted!");
