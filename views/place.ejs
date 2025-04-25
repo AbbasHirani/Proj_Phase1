@@ -27,7 +27,6 @@
     <div class="col-8 offset-3 mb-4 ">
         <h4>Leave Us a Review!</h4>
         <%if(currUser){%>
-            <%=currUser%>
         <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation">
             <div class="mb-3 mt-3">
                 <label for="ratings" class="form-label">Rating</label>
@@ -45,8 +44,9 @@
         <hr/>
         <%}else{%>
             <a href="/signup"><b>Login / SignUp to add Reviews!</b></a>
+            
         <%}%>
-
+        <br><br>
         <%if(rec.reviews.length){%>
             <p><b>All Reviews!</b></p>
             <div class="row">
@@ -54,10 +54,12 @@
                     <div class="card col-5 mb-3 ms-3">
                         <div class="card-body">
                             
+
                             <h5 class="card-title">@<%=review.author.username%></h5>
                             <p class="card-text"><%=review.comment%></p>
                             <p class="card-text"><%=review.ratings%> stars</p>
-                            <%if(review.author._id.equals(currUser._id)){%>
+                            
+                            <%if(currUser && review.author._id.equals(currUser._id)){%>
                             <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post">
                                 <button class="btn btn-dark btn-sm">Delete</button>
                             </form>

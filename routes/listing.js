@@ -27,14 +27,14 @@ router.get("/:id" ,async(req,res)=>{
         req.flash("error","The Listing does not exist!");
         res.redirect("/listings");
     }else{
-        console.log(rec);
         res.render("place.ejs" , {rec});
     }
     
 })
 
 //CREATE ROUTE
-router.post("/",isloggedin,validateListing, wrapAsync(async (req, res,next) => {
+router.post("/",isloggedin, wrapAsync(async (req, res,next) => {
+    console.log("in create post");
     let result= ListingSchema.validate(req.body);
     console.log(result);
     const newListing = new Listing(req.body);
@@ -45,7 +45,7 @@ router.post("/",isloggedin,validateListing, wrapAsync(async (req, res,next) => {
 
 }));
 
-router.get("/:id/edit",isloggedin,isOwner,validateListing,async(req,res)=>{
+router.get("/:id/edit",isloggedin,isOwner,async(req,res)=>{
     let {id} = req.params;
     let data = await  Listing.findById(id);
     if(!data){
