@@ -3,7 +3,7 @@
     <div class="col-8 offset-2">
 <body>
     <h1>PUBLISH HERE!</h1>
-    <form action="/listings" method="post" novalidate class="needs-validation" >
+    <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
         <div>
             <label for="title" class="form-label">Title</label>
             <input type="text" name="title" placeholder="Enter title" class="form-control" required/>
@@ -16,10 +16,15 @@
             <div class="invalid-feedback">Enter correct Description</div>
         </div>
         <br><br>
-        <div>
+        <!-- <div>
             <label for="image" class="form-label">Image</label>
             <input type="text" name="image" placeholder="Enter Image Link/URL" class="form-control"/>
             <div class="invalid-feedback">Enter Correct URL</div>
+        </div> -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image"  class="form-control" required/>
+            <div class="invalid-feedback">Upload Correct Picture</div>
         </div>
         <br><br>
         <div>
@@ -45,23 +50,8 @@
         <button class="btn btn-dark">ADD!</button>
         <br><br>
     </form>
-    <script>
-        (() => {
-            'use strict'
-        
-            const forms = document.querySelectorAll('.needs-validation');
-        
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        })();
-        </script>
+    
+<script src="/js/validation.js"></script>
 </body>
 </div>
 </div>

@@ -2,7 +2,110 @@
 
 <link rel="stylesheet" href="../public/css/listingstyle.css">
 <body>
-    <div class="allcards">
+    <style>
+        #filters{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+
+        }
+        .filter{
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 1 rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+        .filter:hover{
+            opacity: 1;
+            cursor: pointer;
+        }
+        .form-check-input {
+            cursor: pointer;
+        }
+        .form-check-label{
+            cursor: pointer;
+        }
+        .tax-info{
+            display: none;
+        }
+        .tax-switch{
+           border: 1px solid black;
+           border-radius: 0.5rem;
+           height: 3rem;
+           padding: 1rem;
+           margin-left: 1rem;
+           display: flex;
+           align-items: center;
+        }
+    </style>
+    
+    <div id="filters">
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+        </div> 
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="tax-switch">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Apply Taxes</label>
+            </div>
+        </div>
+    </div>
+
+        <div class="allcards">
         <% for (list of alllisting){ %>
             <!-- <div>
                 <h2><%=list.title%></h2>
@@ -19,11 +122,13 @@
             <hr> -->
             <a href="/listings/<%=list._id%>" class="anchorcards">
                 <div class="listing-card" style="width: 20rem;">
-                    <img src="<%=list.image%>" class="card-img-top" style="height:18rem">
+                    <img src="<%=list.image.url%>" class="card-img-top" style="height:18rem">
                     <div class="listing-card-body">
                       <h4><%=list.title%></h4>
                       <h6><%=list.location%></h6>
                       <h6>&#8377 <%=list.price%></h6>
+                      <% let x =list.price + list.price * 0.18  %>
+                      <i class="tax-info">  &#8377 <%=x%> &nbsp; &nbsp; Inc 18% GST</i>
                     </div>
                   </div>
             </a>
@@ -36,3 +141,20 @@
         <button>ADD NEW!</button>
     </form>
 </body>
+
+<script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+    taxSwitch.addEventListener("click",()=>{
+        console.log("buttom clicked");
+        let taxInfo = document.getElementsByClassName("tax-info");
+        console.log(taxInfo);
+        for (info of taxInfo){
+            if (info.style.display != "inline"){
+                info.style.display = "inline";
+            }else{
+                info.style.display = "none";
+            }
+            
+        }
+    })
+</script>

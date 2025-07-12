@@ -1,8 +1,14 @@
 <% layout("/layouts/boilerplate.ejs")%>
+
+<script>
+    const mapToken = "<%=process.env.MAP_TOKEN%>";
+    const rec = <%- JSON.stringify(rec)%>;
+</script>
+
 <body>
     <div class="col-8 offset-3 row mt-3">
         <h1><%=rec.title%></h1>
-        <img src="<%=rec.image%>" 
+        <img src="<%=rec.image.url%>" 
         class="card-img-top show-img">
         <br>
         <p class="card-text"><b>Owned By :- <%=rec.owner.username%></b></p>
@@ -28,11 +34,24 @@
         <h4>Leave Us a Review!</h4>
         <%if(currUser){%>
         <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation">
-            <div class="mb-3 mt-3">
+            <!-- <div class="mb-3 mt-3">
                 <label for="ratings" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" class="form-control"  id="ratings" name="review[ratings]">
-                
-            </div>
+                <input type="range" min="1" max="5" class="form-control"  id="ratings" name="review[ratings]"> 
+            </div> -->
+            <fieldset class="starability-slot">
+                <legend>First rating:</legend>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[ratings]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[ratings]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[ratings]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[ratings]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[ratings]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[ratings]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
             <div class="mb-3 mt-3">
                 <label for="comment" class="form-label">Comment</label>
                 <textarea name="review[comment]"  class="form-control" id="comment" cols="38" rows="5" required></textarea>
@@ -56,8 +75,8 @@
                             
 
                             <h5 class="card-title">@<%=review.author.username%></h5>
+                            <p class="starability-result card-text" data-rating=<%=review.ratings%>></p>
                             <p class="card-text"><%=review.comment%></p>
-                            <p class="card-text"><%=review.ratings%> stars</p>
                             
                             <%if(currUser && review.author._id.equals(currUser._id)){%>
                             <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post">
@@ -69,26 +88,16 @@
                 <% } %>
             </div>
         <%}%>
+        <hr>
+        </div> 
+            <div class="col-8 offset-3 mb-4">
+            <h2>Find Us Here!</h2>
+            <div id="map">
 
-        <script>
-            (() => {
-    'use strict'
-  
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-  
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-  
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()
-        </script>
+            </div>
     </div>
 </body>
+
+        
+<script src="/js/validation.js"></script>
+<script src="/js/mapbox.js"></script>

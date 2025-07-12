@@ -8,6 +8,13 @@ const {isloggedin, isOwner,validateListing} = require("../middleware.js");
 
 const ListingController = require("../controller/listing.js");
 
+//requireing cloudinary
+const{cloudinary,storage} = require("../cloudConfig.js");
+
+//MULTER - to parse the files
+const multer  = require('multer')
+const upload = multer({storage})
+
 //INDEX ROUTE
 router.get("/",ListingController.index);
 
@@ -18,11 +25,11 @@ router.get("/new",isloggedin,ListingController.newFormRender);
 router.get("/:id" ,ListingController.showRoute);
 
 //CREATE ROUTE
-router.post("/",isloggedin,wrapAsync(ListingController.createListing));
+router.post("/",isloggedin,upload.single("image"),wrapAsync(ListingController.createListing));
 
 router.get("/:id/edit",isloggedin,isOwner,ListingController.editFormRender);
 
-router.patch("/:id",isloggedin,isOwner,ListingController.editListing);
+router.patch("/:id",isloggedin,isOwner,upload.single("image"),ListingController.editListing);
 
 router.delete("/:id/delete",isloggedin,isOwner,ListingController.destoryListing);
 

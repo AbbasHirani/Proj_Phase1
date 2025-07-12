@@ -1,5 +1,9 @@
 const Listing = require("../models/listing");
 
+const mbxGeoCoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeoCoding({ accessToken: mapToken });
+
 module.exports.index = async (req,res)=>{
     let alllisting = await Listing.find();
     res.render("listings.ejs" , { alllisting });
@@ -22,12 +26,25 @@ module.exports.showRoute = async(req,res)=>{
 }
 
 module.exports.createListing = async (req, res,next) => {
+
+    //geocoding
+    let  response = await geocodingClient.forwardGeocode({
+        query: req.body.location,
+        limit: 1
+    })
+    .send();
+
     // console.log("in create post");
     // let result= ListingSchema.validate(req.body);
     // console.log(result);
+    let url = req.file.path;
+    let filename = req.file.filename;
     const newListing = new Listing(req.body);
     newListing.owner = req.user._id;
+    newListing.image = {url,filename};
+    newListing.geometry = response.body.features[0].geometry
     await newListing.save();
+    console.log("Listing saved");
     req.flash("success","new lisitng created!");
     res.redirect("/listings");
 
@@ -39,9 +56,11 @@ module.exports.editFormRender = async(req,res)=>{
     if(!data){
         req.flash("error","The Listing does not exist!");
         res.redirect("/listings");
-    }else{
-        res.render("edit.ejs" , {data});
     }
+    let originalImageUrl = data.image.url;
+    originalImageUrl = originalImageUrl.replace("/upload","/upload/h_300,w_250");
+    res.render("edit.ejs" , {data,originalImageUrl});
+
     console.log(data);
     //res.render("edit.ejs",{data});
 }
@@ -50,7 +69,7 @@ module.exports.editListing = async(req,res)=>{
     let editListing = req.body;
     let {id} = req.params;
     let {title : newtitle,description:newdescription,image:newimage,price:newprice,location:newlocation,country:newcountry} = req.body;
-    await Listing.findByIdAndUpdate(id , {
+    let listing = await Listing.findByIdAndUpdate(id , {
         title : newtitle,
         description : newdescription,
         image : newimage,
@@ -58,6 +77,13 @@ module.exports.editListing = async(req,res)=>{
         location : newlocation,
         country : newcountry
     });
+    if (typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = {url,filename};
+        await listing.save();
+    }
+    
     req.flash("success","lisitng Updated!");
     res.redirect("/listings");
 }

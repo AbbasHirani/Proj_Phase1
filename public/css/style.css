@@ -109,4 +109,9 @@ footer
     background-color: white;
 }
 
+/* map  */
+#map { 
+    height: 500px;
+    width: 500px;
+}
 

@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config()
+}
+
 const express = require("express");
 const app = express();
 const ejs = require("ejs");
@@ -6,7 +10,23 @@ const Listing = require("./models/listing");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-app.use(express.static(path.join(__dirname,"public")))
+
+const pubicDirectory = path.join(__dirname,"public");
+const viewsDirectory = path.join(__dirname,"views")
+//librarry to autoreload browser
+const livereload = require("livereload");
+const liveReloadserver = livereload.createServer();
+liveReloadserver.watch(viewsDirectory,pubicDirectory);
+const connectLiveReload = require("connect-livereload");
+app.use(connectLiveReload());
+liveReloadserver.server.once("connection", () => {
+  setTimeout(() => {
+    liveReloadserver.refresh("/");
+  }, 100);
+})
+
+
+app.use(express.static(pubicDirectory));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(methodOverride("_method"));
@@ -18,7 +38,10 @@ const wrapAsync = require("./utils/wrapSync.js");
 const ExpressEroor = require("./utils/ExpressError.js");
 const {ListingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
+//const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+dbUrl = process.env.ATLAS_DBURL;
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
@@ -35,8 +58,23 @@ const cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
 
+const MongoStore = require('connect-mongo');
+
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    crypto : {
+        secret : process.env.SECRET,
+    },
+    touchAfter : 24 * 3600,
+});
+
+store.on("error", ()=>{
+    console.log("error occured on mongose store",err);
+});
+
 const sessionOptions = {
-    secret:"secretString",
+    store,
+    secret:process.env.SECRET,
     resave : false,
     saveUninitialized : true,
     expires : Date.now() + 7 *24*60*60*1000,
@@ -68,7 +106,7 @@ main().then(()=>{
 })
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 }
 
 app.get("/",(req,res)=>{

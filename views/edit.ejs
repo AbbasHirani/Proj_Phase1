@@ -5,7 +5,7 @@
 <body>
     <h1>Edit Your List Here</h1>
     <br><br>
-    <form action="/listings/<%=data._id%>?_method=patch" method="post">
+    <form action="/listings/<%=data._id%>?_method=patch" method="post" enctype="multipart/form-data">
         <div>
             <label for="title" class="form-label">Title</label>
             <input type="text" name="title" placeholder="<%=data.title%>" value="<%=data.title%>" class="form-control">    
@@ -17,8 +17,13 @@
         </div>
         <br><br>
         <div>
-            <label for="image" class="form-label">Image</label>
-            <input type="text" name="image" placeholder="<%=data.image%>" value="<%=data.image%>" class="form-control">
+            Original Listing Image
+            <img src=<%=originalImageUrl%>/>
+        </div>
+        <br><br>
+        <div>
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" name="image" class="form-control">
         </div>
         <br><br>
         <div>
