@@ -1,5 +1,32 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<body>
-    AN ERROR OCCURED!
-    <P><%=err%></P>
-</body>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <div class="mb-4">
+            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+          </div>
+          <h1 class="h2 mb-3">Oops! Something went wrong</h1>
+          <p class="text-muted mb-4"><%=err%></p>
+          <div class="d-grid gap-3">
+            <a href="/" class="btn btn-danger">
+              <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-2"></i>Go Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+</style>

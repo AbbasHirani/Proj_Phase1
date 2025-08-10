@@ -1,49 +1,109 @@
 <% layout("/layouts/boilerplate.ejs")%>
 
-<h1 class="col-8 offset-2 mb-3">Sign up on Wanderlust!!</h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <i class="fa-brands fa-airbnb text-danger" style="font-size: 3rem;"></i>
+            <h1 class="h2 mb-3 mt-3">Join Wanderlust</h1>
+            <p class="text-muted">Create your account to start your journey</p>
+          </div>
 
-<div class="row mt-3">
-    <div class="col-8 offset-2">
-        <form action="/signup" method="post" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" placeholder="Enter username" class="form-control" required/>
-                <div class="invalid-feedback">Enter correct Username</div>
-                <div class="valid-feedback">Username looks good!</div>
+          <form action="/signup" method="post" class="needs-validation" novalidate>
+            <div class="mb-4">
+              <label for="username" class="form-label">Username</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <i class="fas fa-user text-muted"></i>
+                </span>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Choose a username" required>
+              </div>
+              <div class="invalid-feedback">Please choose a username</div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" name="email" placeholder="Enter Email" class="form-control" required/>
-                <div class="invalid-feedback">Enter correct Email</div>
-                <div class="valid-feedback">Email looks good!</div>
+
+            <div class="mb-4">
+              <label for="email" class="form-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <i class="fas fa-envelope text-muted"></i>
+                </span>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+              </div>
+              <div class="invalid-feedback">Please enter a valid email</div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" placeholder="Enter Password" class="form-control" required/>
-                <div class="invalid-feedback">Enter correct Password</div>
-                <div class="valid-feedback">Password looks good!</div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <i class="fas fa-lock text-muted"></i>
+                </span>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required>
+              </div>
+              <div class="invalid-feedback">Please create a password</div>
+              <small class="text-muted">Password must be at least 6 characters long</small>
             </div>
-            <button class="btn btn-success">SignUp</button>
-        </form>
-        <br>
-        <h5><a href="/login">Already a User?? Login</a></h5>
+
+            <div class="d-grid mb-4">
+              <button type="submit" class="btn btn-danger btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Create Account
+              </button>
+            </div>
+
+            <div class="text-center">
+              <p class="mb-0">Already have an account? <a href="/login" class="text-danger">Login</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
+<style>
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.form-control {
+  border-left: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.form-control:focus + .input-group-text {
+  border-color: #dee2e6;
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+</style>
+
 <script>
-    (() => {
-        'use strict'
-    
-        const forms = document.querySelectorAll('.needs-validation');
-    
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    })();
-    </script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>

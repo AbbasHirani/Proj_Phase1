@@ -1,57 +1,136 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<div class="row">
-    <div class="col-8 offset-2">
-<body>
-    <h1>PUBLISH HERE!</h1>
-    <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
-        <div>
-            <label for="title" class="form-label">Title</label>
-            <input type="text" name="title" placeholder="Enter title" class="form-control" required/>
-            <div class="invalid-feedback">Enter correct Title</div>
-        </div>
-        <br><br>
-        <div>
-            <label for="description" class="form-label">Description</label>
-            <textarea name="description" placeholder="Enter Description" class="form-control" required></textarea>
-            <div class="invalid-feedback">Enter correct Description</div>
-        </div>
-        <br><br>
-        <!-- <div>
-            <label for="image" class="form-label">Image</label>
-            <input type="text" name="image" placeholder="Enter Image Link/URL" class="form-control"/>
-            <div class="invalid-feedback">Enter Correct URL</div>
-        </div> -->
-        <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input type="file" name="image"  class="form-control" required/>
-            <div class="invalid-feedback">Upload Correct Picture</div>
-        </div>
-        <br><br>
-        <div>
-            <label for="price" class="form-label"> Price</label>
-            <input  name="price" placeholder="Enter Price" class="form-control" required/>
-            <div class="invalid-feedback">Enter correct Price</div>
-        </div>
-        <br><br>
-        <div class="row">
-            <div class="col-md-4">
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <h1 class="h2 mb-3">Create Your Listing</h1>
+            <p class="text-muted">Share your space with travelers from around the world</p>
+          </div>
+
+          <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
+            <div class="row g-4">
+              <!-- Title -->
+              <div class="col-12">
+                <label for="title" class="form-label">Listing Title</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-heading text-muted"></i>
+                  </span>
+                  <input type="text" name="title" id="title" class="form-control" placeholder="Enter a catchy title for your listing" required>
+                </div>
+                <div class="invalid-feedback">Please enter a title for your listing</div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+                <label for="description" class="form-label">Description</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white align-items-start pt-2">
+                    <i class="fas fa-align-left text-muted"></i>
+                  </span>
+                  <textarea name="description" id="description" class="form-control" rows="4" placeholder="Describe your space, amenities, and what makes it special" required></textarea>
+                </div>
+                <div class="invalid-feedback">Please provide a description of your listing</div>
+              </div>
+
+              <!-- Image URL -->
+              <div class="col-12">
+                <label for="image" class="form-label">Image</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-image text-muted"></i>
+                  </span>
+                  <input type="file" name="image"  class="form-control" required/>
+                </div>
+                <div class="invalid-feedback">Please enter a valid image</div>
+                <small class="text-muted">Tip: Use a high-quality image that showcases your space</small>
+              </div>
+
+              <!-- Price -->
+              <div class="col-md-6">
+                <label for="price" class="form-label">Price per Night (₹)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-rupee-sign text-muted"></i>
+                  </span>
+                  <input type="number" name="price" id="price" class="form-control" placeholder="Enter price per night" required min="0">
+                </div>
+                <div class="invalid-feedback">Please enter a valid price</div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-md-6">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" name="location" placeholder="Enter location" class="form-control" required/>
-                <div class="invalid-feedback">Enter correct Price</div>
-            </div>
-            <br><br>
-            <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-map-marker-alt text-muted"></i>
+                  </span>
+                  <input type="text" name="location" id="location" class="form-control" placeholder="Enter location" required>
+                </div>
+                <div class="invalid-feedback">Please enter the location</div>
+              </div>
+
+              <!-- Country -->
+              <div class="col-12">
                 <label for="country" class="form-label">Country</label>
-                <input type="text" name="country" placeholder="Enter Country" class="form-control" required />
-                <div class="invalid-feedback">Enter correct Country</div>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-globe text-muted"></i>
+                  </span>
+                  <input type="text" name="country" id="country" class="form-control" placeholder="Enter country" required>
+                </div>
+                <div class="invalid-feedback">Please enter the country</div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-danger btn-lg px-5">
+                  <i class="fas fa-plus-circle me-2"></i>Create Listing
+                </button>
+              </div>
             </div>
+          </form>
         </div>
-        <br><br>
-        <button class="btn btn-dark">ADD!</button>
-        <br><br>
-    </form>
-    
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.form-control {
+  border-left: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.form-control:focus + .input-group-text {
+  border-color: #dee2e6;
+}
+
+textarea.form-control {
+  min-height: 120px;
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+</style>
+
 <script src="/js/validation.js"></script>
-</body>
-</div>
-</div>

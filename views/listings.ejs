@@ -1,160 +1,108 @@
-<% layout("/layouts/boilerplate.ejs")%>
+<% layout("/layouts/boilerplate.ejs") %>
 
-<link rel="stylesheet" href="../public/css/listingstyle.css">
-<body>
-    <style>
-        #filters{
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Explore Listings</h2>
+    <a href="/listings/new" class="btn btn-success rounded-pill px-4">
+      <i class="fa fa-plus-circle me-2"></i>Add New Listing
+    </a>
+  </div>
 
-        }
-        .filter{
-            text-align: center;
-            margin-right: 2rem;
-            margin-top: 1 rem;
-            opacity: 0.7;
-            font-size: 0.8rem;
-        }
-        .filter:hover{
-            opacity: 1;
-            cursor: pointer;
-        }
-        .form-check-input {
-            cursor: pointer;
-        }
-        .form-check-label{
-            cursor: pointer;
-        }
-        .tax-info{
-            display: none;
-        }
-        .tax-switch{
-           border: 1px solid black;
-           border-radius: 0.5rem;
-           height: 3rem;
-           padding: 1rem;
-           margin-left: 1rem;
-           display: flex;
-           align-items: center;
-        }
-    </style>
-    
-    <div id="filters">
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>trending</p>
-        </div> 
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="tax-switch">
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Apply Taxes</label>
-            </div>
-        </div>
-    </div>
-
-        <div class="allcards">
-        <% for (list of alllisting){ %>
-            <!-- <div>
-                <h2><%=list.title%></h2>
-                <img src="<%=list.image%>">
-                <h2><%=list.price%></h2>
-                <a href="/listings/<%=list._id%>">Detailed View</a>
-                <form action="/listings/<%=list._id%>/edit" method="get">
-                    <button>EDIT</button>
-                </form>
-                <form action="/listings/<%=list._id%>/delete?_method=delete" method="post">
-                    <button>DELETE</button>
-                </form>
-            </div>
-            <hr> -->
-            <a href="/listings/<%=list._id%>" class="anchorcards">
-                <div class="listing-card" style="width: 20rem;">
-                    <img src="<%=list.image.url%>" class="card-img-top" style="height:18rem">
-                    <div class="listing-card-body">
-                      <h4><%=list.title%></h4>
-                      <h6><%=list.location%></h6>
-                      <h6>&#8377 <%=list.price%></h6>
-                      <% let x =list.price + list.price * 0.18  %>
-                      <i class="tax-info">  &#8377 <%=x%> &nbsp; &nbsp; Inc 18% GST</i>
-                    </div>
-                  </div>
-            </a>
-            <br>
-        <% } %>
-
-    </div>
-    
-    <form action="/listings/new" method="get">
-        <button>ADD NEW!</button>
-    </form>
-</body>
-
-<script>
-    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-    taxSwitch.addEventListener("click",()=>{
-        console.log("buttom clicked");
-        let taxInfo = document.getElementsByClassName("tax-info");
-        console.log(taxInfo);
-        for (info of taxInfo){
-            if (info.style.display != "inline"){
-                info.style.display = "inline";
-            }else{
-                info.style.display = "none";
-            }
+  <div class="row g-4">
+    <% for (let list of alllisting) { %>
+      <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+        <a href="/listings/<%= list._id %>" class="text-decoration-none text-dark">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 listing-card">
             
-        }
-    })
+            <!-- Image + Wishlist -->
+            <div class="position-relative">
+              <img src="<%= list.image.url %>" alt="<%= list.title %>" class="card-img-top listing-img">
+              <div class="wishlist-btn position-absolute top-0 end-0 m-2">
+                <i class="fa-regular fa-heart"></i>
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <h6 class="fw-bold text-truncate mb-1"><%= list.title %></h6>
+              <div class="text-muted small mb-2">
+                <i class="fa fa-map-marker-alt me-1 text-danger"></i> <%= list.location %>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold text-success">
+                  ₹<%= list.price %><span class="text-muted small">/night</span>
+                </div>
+                <div class="text-warning small">
+                  <i class="fa fa-star me-1"></i>4.8
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+.listing-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.listing-img {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.listing-card:hover .listing-img {
+  transform: scale(1.05);
+}
+.wishlist-btn {
+  width: 38px;
+  height: 38px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+.wishlist-btn i {
+  font-size: 1.2rem;
+  color: #555;
+}
+.wishlist-btn.liked i {
+  color: #dc3545;
+}
+</style>
+
+<!-- Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".wishlist-btn").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault(); // Prevent link click
+      e.stopPropagation(); // Stop card link navigation
+      const icon = this.querySelector("i");
+      if (icon.classList.contains("fa-regular")) {
+        icon.classList.remove("fa-regular");
+        icon.classList.add("fa-solid");
+        this.classList.add("liked");
+      } else {
+        icon.classList.remove("fa-solid");
+        icon.classList.add("fa-regular");
+        this.classList.remove("liked");
+      }
+    });
+  });
+});
 </script>
+
+<!-- Make sure you have Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

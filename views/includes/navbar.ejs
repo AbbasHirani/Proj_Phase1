@@ -1,25 +1,105 @@
-<nav class="navbar navbar-expand-md bg-body-tertiary sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i>AirBnB</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-          <a class="nav-link" href="/listings">All Listings</a>
-          
+<nav class="navbar navbar-expand-md bg-white sticky-top border-bottom">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center" href="/listings">
+      <i class="fa-brands fa-airbnb fs-3 me-2 text-danger"></i>
+      <span class="fw-bold">Wanderlust</span>
+    </a>
+    
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Search Bar -->
+      <form class="d-flex mx-auto my-2 my-md-0 nav-search" role="search">
+        <div class="input-group shadow-sm rounded-pill overflow-hidden">
+          <input class="form-control border-0 ps-3" type="search" placeholder="Search destinations..." aria-label="Search">
+          <button class="btn btn-danger px-3" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
-        <div class="navbar-nav ms-auto" >
-          <a class="nav-link" href="/listings/new">Add New Listings</a>
-          <% if(!currUser){ %>
-            <a href="/signup" class="nav-link ">SignUp!</a>
-            <a href="/login" class="nav-link ">Login!</a>
-          <% } %>
-          <% if(currUser){ %>
-            <a href="/logout" class="nav-link ">Logout!</a>
-          <% } %>
+      </form>
+      
+      <!-- Main Navigation -->
+      <div class="navbar-nav gap-1">
+        <a class="nav-link px-3 rounded-pill d-flex align-items-center" href="/">
+          <i class="fas fa-home me-2"></i> Home
+        </a>
+        <a class="nav-link px-3 rounded-pill d-flex align-items-center" href="/listings">
+          <i class="fas fa-compass me-2"></i> Explore
+        </a>
+        <a class="nav-link px-3 rounded-pill d-flex align-items-center" href="/listings/new">
+          <i class="fas fa-plus-circle me-2"></i> Host
+        </a>
+      </div>
+
+      <!-- Auth Navigation -->
+      <div class="navbar-nav ms-auto">
+        <div class="dropdown">
+          <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2 shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-user-circle fs-5"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end mt-2 shadow">
+            <% if(!currUser){ %>
+              <li><a class="dropdown-item d-flex align-items-center" href="/signup"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
+              <li><a class="dropdown-item d-flex align-items-center" href="/login"><i class="fas fa-sign-in-alt me-2"></i>Log In</a></li>
+            <% } else { %>
+              <li><a class="dropdown-item d-flex align-items-center" href="/user/profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item d-flex align-items-center" href="/user/listings"><i class="fas fa-list me-2"></i>My Listings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item d-flex align-items-center text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+            <% } %>
+          </ul>
         </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
+
+<style>
+.navbar {
+  height: 80px;
+}
+
+.nav-link {
+  transition: all 0.2s ease;
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+}
+
+.nav-search {
+  max-width: 400px;
+  width: 100%;
+}
+
+.nav-search .form-control:focus {
+  box-shadow: none;
+}
+
+.dropdown-item {
+  padding: 0.7rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 1rem 0;
+  }
+  
+  .nav-search {
+    max-width: 100%;
+  }
+}
+</style>
