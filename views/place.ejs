@@ -1,44 +1,93 @@
 <% layout("/layouts/boilerplate.ejs")%>
 
 <script>
-    const mapToken = "<%=process.env.MAP_TOKEN%>";
-    const rec = <%- JSON.stringify(rec)%>;
+  const mapToken = "<%=process.env.MAP_TOKEN%>";
+  const rec = <%- JSON.stringify(rec)%>;
 </script>
 
-<body>
-    <div class="col-8 offset-3 row mt-3">
-        <h1><%=rec.title%></h1>
-        <img src="<%=rec.image.url%>" 
-        class="card-img-top show-img">
-        <br>
-        <p class="card-text"><b>Owned By :- <%=rec.owner.username%></b></p>
-        <p class="card-text"><%=rec.description%></p>
-        <h2 class="card-text">&#8377 <%=rec.price%></h2>
-        <h3 class="card-text"><%=rec.location%></h3>
-        <h3 class="card-text"><%=rec.country%></h3>
+<div class="container py-5">
+  <!-- Main Listing Section -->
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <img src="<%=rec.image.url%>" class="card-img-top listing-detail-img" alt="<%=rec.title%>">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h1 class="card-title h2 mb-0"><%=rec.title%></h1>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-star text-warning me-1"></i>
+              <span class="text-muted">4.8</span>
+            </div>
+          </div>
+          
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+            <span class="text-muted"><%=rec.location%>, <%=rec.country%></span>
+          </div>
 
-        <% if(currUser && currUser._id.equals(rec.owner._id)){ %>
-            <form action="/listings/<%=rec._id%>/edit" method="get">
-                <button class="btn btn-dark offset-5 mb-3 mt-3">EDIT</button>
-            </form>
-            <br/>
-            <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post">
-                <button class="btn btn-dark offset-5">DELETE</button>
-            </form>
-        <% } %>
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle text-primary me-2"></i>
+            <span class="text-muted">Hosted by <b><%=rec.owner.username%></b></span>
+          </div>
+
+          <h3 class="text-success mb-4">
+            <span class="fw-bold">₹<%=rec.price%></span>
+            <small class="text-muted">/night</small>
+          </h3>
+
+          <p class="card-text lead"><%=rec.description%></p>
+
+          <% if(currUser && currUser._id.equals(rec.owner._id)){ %>
+            <div class="d-flex gap-3 mt-4">
+              <a href="/listings/<%=rec._id%>/edit" class="btn btn-outline-primary">
+                <i class="fas fa-edit me-2"></i>Edit Listing
+              </a>
+              <form action="/listings/<%=rec._id%>/delete?_method=delete" method="post" class="d-inline">
+                <button class="btn btn-outline-danger">
+                  <i class="fas fa-trash me-2"></i>Delete Listing
+                </button>
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </div>
-    <br>
-    <hr/>
-    <br>
-    <div class="col-8 offset-3 mb-4 ">
-        <h4>Leave Us a Review!</h4>
-        <%if(currUser){%>
-        <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation">
-            <!-- <div class="mb-3 mt-3">
-                <label for="ratings" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" class="form-control"  id="ratings" name="review[ratings]"> 
-            </div> -->
-            <fieldset class="starability-slot">
+
+    <!-- Booking Section -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm sticky-top" style="top: 2rem;">
+        <div class="card-body p-4">
+          <h4 class="card-title mb-4">Book Your Stay</h4>
+          <div class="d-grid gap-3">
+            <button class="btn btn-danger btn-lg">
+              <i class="fas fa-calendar-check me-2"></i>Check Availability
+            </button>
+            <button class="btn btn-outline-danger">
+              <i class="fas fa-heart me-2"></i>Save to Wishlist
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="row mt-5">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h3 class="card-title mb-4">Reviews</h3>
+          
+          <%if(currUser){%>
+            <form method="post" action="/listings/<%=rec._id%>/reviews" novalidate class="needs-validation mb-4">
+              <!-- <div class="mb-4">
+                <label for="ratings" class="form-label">Your Rating</label>
+                <div class="d-flex align-items-center">
+                  <input type="range" min="1" max="5" class="form-range flex-grow-1 me-3" id="ratings" name="review[ratings]">
+                  <span class="text-muted" id="ratingValue">3 stars</span>
+                </div>
+              </div> -->
+              <fieldset class="starability-slot">
                 <legend>First rating:</legend>
                 <input type="radio" id="no-rate" class="input-no-rate" name="review[ratings]" value="0" checked aria-label="No rating." />
                 <input type="radio" id="first-rate1" name="review[ratings]" value="1" />
@@ -51,44 +100,64 @@
                 <label for="first-rate4" title="Very good">4 stars</label>
                 <input type="radio" id="first-rate5" name="review[ratings]" value="5" />
                 <label for="first-rate5" title="Amazing">5 stars</label>
-            </fieldset>
-            <div class="mb-3 mt-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea name="review[comment]"  class="form-control" id="comment" cols="38" rows="5" required></textarea>
-                <div class="invalid-feedback">Please Add Comments For Review</div>
-            </div> 
-            <button class="btn btn-dark offset-5">Submit</button>
-        </form>
-        
-        <hr/>
-        <%}else{%>
-            <a href="/signup"><b>Login / SignUp to add Reviews!</b></a>
-            
-        <%}%>
-        <br><br>
-        <%if(rec.reviews.length){%>
-            <p><b>All Reviews!</b></p>
-            <div class="row">
-                <% for (review of rec.reviews){ %>
-                    <div class="card col-5 mb-3 ms-3">
-                        <div class="card-body">
-                            
-
-                            <h5 class="card-title">@<%=review.author.username%></h5>
-                            <p class="starability-result card-text" data-rating=<%=review.ratings%>></p>
-                            <p class="card-text"><%=review.comment%></p>
-                            
-                            <%if(currUser && review.author._id.equals(currUser._id)){%>
-                            <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post">
-                                <button class="btn btn-dark btn-sm">Delete</button>
-                            </form>
-                            <%}%>
-                        </div>
-                    </div>
-                <% } %>
+              </fieldset>
+              <div class="mb-4">
+                <label for="comment" class="form-label">Your Review</label>
+                <textarea name="review[comment]" class="form-control" id="comment" rows="4" required></textarea>
+                <div class="invalid-feedback">Please add your review comment</div>
+              </div>
+              <button class="btn btn-primary">
+                <i class="fas fa-paper-plane me-2"></i>Submit Review
+              </button>
+            </form>
+          <%} else {%>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              <a href="/login" class="alert-link">Login</a> or <a href="/signup" class="alert-link">Sign Up</a> to leave a review!
             </div>
-        <%}%>
-        <hr>
+          <%}%>
+
+          <hr class="my-4">
+
+          <%if(rec.reviews.length){%>
+            <div class="row g-4">
+              <% for (review of rec.reviews){ %>
+                <div class="col-md-6">
+                  <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-user-circle fs-4 text-primary me-2"></i>
+                        <div>
+                          <h6 class="mb-0">@<%=review.author.username%></h6>
+                          <small class="text-muted">
+                            <% for(let i = 0; i < review.ratings; i++) { %>
+                              <i class="fas fa-star text-warning"></i>
+                            <% } %>
+                          </small>
+                        </div>
+                      </div>
+                      <p class="card-text"><%=review.comment%></p>
+                      <%if(currUser && review.author._id.equals(currUser._id)){%>
+                        <form action="/listings/<%=rec._id%>/reviews/<%=review._id%>?_method=delete" method="post" class="mt-3">
+                          <button class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash me-1"></i>Delete Review
+                          </button>
+                        </form>
+                      <%}%>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          <%} else {%>
+            <div class="text-center py-4">
+              <i class="fas fa-comments fs-1 text-muted mb-3"></i>
+              <p class="text-muted">No reviews yet. Be the first to review!</p>
+            </div>
+          <%}%>
+        </div>
+      </div>
+      <hr>
         </div> 
             <div class="col-8 offset-3 mb-4">
             <h2>Find Us Here!</h2>
@@ -96,8 +165,54 @@
 
             </div>
     </div>
-</body>
+  </div>
+</div>
 
-        
+<style>
+.listing-detail-img {
+  height: 500px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.form-range::-webkit-slider-thumb {
+  background: #dc3545;
+}
+
+.form-range::-moz-range-thumb {
+  background: #dc3545;
+}
+
+.form-range::-ms-thumb {
+  background: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .listing-detail-img {
+    height: 300px;
+  }
+  
+  .sticky-top {
+    position: static;
+  }
+}
+</style>
+
 <script src="/js/validation.js"></script>
 <script src="/js/mapbox.js"></script>
+
+<script>
+// Update rating value display
+const ratingInput = document.getElementById('ratings');
+const ratingValue = document.getElementById('ratingValue');
+if (ratingInput && ratingValue) {
+  ratingInput.addEventListener('input', () => {
+    ratingValue.textContent = `${ratingInput.value} stars`;
+  });
+}
+</script>

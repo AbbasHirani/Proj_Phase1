@@ -1,52 +1,128 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<div class="row">
-    <div class="col-8 offset-2">
 
-<body>
-    <h1>Edit Your List Here</h1>
-    <br><br>
-    <form action="/listings/<%=data._id%>?_method=patch" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="title" class="form-label">Title</label>
-            <input type="text" name="title" placeholder="<%=data.title%>" value="<%=data.title%>" class="form-control">    
-        </div>
-        <br><br>
-        <div>
-            <label for="description" class="form-label">Description</label>
-            <textarea name="description" placeholder="<%=data.description%>" class="form-control"><%=data.description%></textarea>
-        </div>
-        <br><br>
-        <div>
-            Original Listing Image
-            <img src=<%=originalImageUrl%>/>
-        </div>
-        <br><br>
-        <div>
-            <label for="image" class="form-label">Upload Image</label>
-            <input type="file" name="image" class="form-control">
-        </div>
-        <br><br>
-        <div>
-            <label for="price" class="form-label">Price</label>
-            <input type="number" name="price" placeholder="<%=data.price%>" value="<%=data.price%>" class="form-control">
-        </div>
-        <br><br>
-        <div class="row">
-            <div class="col-md-8">
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <h1 class="h2 mb-3">Edit Your Listing</h1>
+            <p class="text-muted">Update your listing details to attract more guests</p>
+          </div>
+
+          <form action="/listings/<%=data._id%>?_method=patch" method="post" enctype="multipart/form-data">
+            <div class="row g-4">
+              <!-- Title -->
+              <div class="col-12">
+                <label for="title" class="form-label">Listing Title</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-heading text-muted"></i>
+                  </span>
+                  <input type="text" name="title" id="title" class="form-control" value="<%=data.title%>" placeholder="Enter a catchy title for your listing">
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+                <label for="description" class="form-label">Description</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white align-items-start pt-2">
+                    <i class="fas fa-align-left text-muted"></i>
+                  </span>
+                  <textarea name="description" id="description" class="form-control" rows="4" placeholder="Describe your space, amenities, and what makes it special"><%=data.description%></textarea>
+                </div>
+              </div>
+
+              <!-- Image URL -->
+              <div class="col-12">
+                <label for="image" class="form-label">Image</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-image text-muted"></i>
+                  </span>
+                  <label for="image" class="form-label">Upload Image</label>
+                </div>
+                <small class="text-muted">Tip: Use a high-quality image that showcases your space</small>
+              </div>
+
+              <!-- Price -->
+              <div class="col-md-6">
+                <label for="price" class="form-label">Price per Night (₹)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-rupee-sign text-muted"></i>
+                  </span>
+                  <input type="number" name="price" id="price" class="form-control" value="<%=data.price%>" placeholder="Enter price per night" min="0">
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-md-6">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" name="location" placeholder="<%=data.location%>" value="<%=data.location%>" class="form-control">
-            </div>
-            <br><br>
-            <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-map-marker-alt text-muted"></i>
+                  </span>
+                  <input type="text" name="location" id="location" class="form-control" value="<%=data.location%>" placeholder="Enter location">
+                </div>
+              </div>
+
+              <!-- Country -->
+              <div class="col-12">
                 <label for="country" class="form-label">Country</label>
-                <input type="text" name="country" placeholder="<%=data.country%>" value="<%=data.country%>" class="form-control">
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="fas fa-globe text-muted"></i>
+                  </span>
+                  <input type="text" name="country" id="country" class="form-control" value="<%=data.country%>" placeholder="Enter country">
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-danger btn-lg px-5">
+                  <i class="fas fa-save me-2"></i>Update Listing
+                </button>
+              </div>
             </div>
+          </form>
         </div>
-        
-        <br><br>
-        <button class="btn btn-dark">UPDATE!</button>
-        <br><br>
-    </form>
-</body>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
+
+<style>
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.form-control {
+  border-left: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.form-control:focus + .input-group-text {
+  border-color: #dee2e6;
+}
+
+textarea.form-control {
+  min-height: 120px;
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+</style>

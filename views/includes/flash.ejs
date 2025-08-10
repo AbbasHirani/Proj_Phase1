@@ -1,17 +1,45 @@
 <% if(success && success.length){ %>
-    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= success %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            
-          </button>
-      </div>
+  <div class="alert alert-success alert-dismissible fade show mx-auto my-3" role="alert" style="max-width: 600px;">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-check-circle me-2"></i>
+      <div><%= success %></div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <% } %>
 
 <% if(error && error.length){ %>
-    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= error %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            
-          </button>
-      </div>
+  <div class="alert alert-danger alert-dismissible fade show mx-auto my-3" role="alert" style="max-width: 600px;">
+    <div class="d-flex align-items-center">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      <div><%= error %></div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <% } %>
+
+<style>
+.alert {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert .btn-close {
+  opacity: 0.5;
+}
+
+.alert .btn-close:hover {
+  opacity: 0.75;
+}
+</style>

@@ -1,14 +1,120 @@
-<footer>
-    <div class="f-class-info">
-        <div class="f-socials">
-            <i class="fa-brands  fa-instagram" ></i>
-            <i class="fa-brands fa-linkedin"></i>
-            <i class="fa-brands fa-facebook"></i>
+<footer class="footer mt-auto py-5 bg-light border-top">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Brand Section -->
+      <div class="col-md-4">
+        <div class="d-flex align-items-center mb-3">
+          <i class="fa-brands fa-airbnb fs-3 me-2 text-danger"></i>
+          <span class="fw-bold fs-5">Wanderlust</span>
         </div>
-        <div class="f-info-brand">&copy; AIRBNB PRIVATE LIMITED</div>
-        <div class="f-links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-        </div>
+        <p class="text-muted mb-0">Find your perfect getaway with Wanderlust. Discover unique stays and experiences around the world.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-2">
+        <h5 class="mb-3">Support</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/help" class="text-decoration-none text-muted">Help Center</a></li>
+          <li class="mb-2"><a href="/safety" class="text-decoration-none text-muted">Safety</a></li>
+          <li class="mb-2"><a href="/cancellation" class="text-decoration-none text-muted">Cancellation Options</a></li>
+        </ul>
+      </div>
+
+      <!-- Community -->
+      <div class="col-md-2">
+        <h5 class="mb-3">Community</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/disaster" class="text-decoration-none text-muted">Disaster Relief</a></li>
+          <li class="mb-2"><a href="/support" class="text-decoration-none text-muted">Support Refugees</a></li>
+          <li class="mb-2"><a href="/combat" class="text-decoration-none text-muted">Combating Discrimination</a></li>
+        </ul>
+      </div>
+
+      <!-- Hosting -->
+      <div class="col-md-2">
+        <h5 class="mb-3">Hosting</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/host" class="text-decoration-none text-muted">Try Hosting</a></li>
+          <li class="mb-2"><a href="/protect" class="text-decoration-none text-muted">AirCover for Hosts</a></li>
+          <li class="mb-2"><a href="/resources" class="text-decoration-none text-muted">Hosting Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div class="col-md-2">
+        <h5 class="mb-3">Legal</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/privacy" class="text-decoration-none text-muted">Privacy Policy</a></li>
+          <li class="mb-2"><a href="/terms" class="text-decoration-none text-muted">Terms of Service</a></li>
+          <li class="mb-2"><a href="/cookies" class="text-decoration-none text-muted">Cookie Policy</a></li>
+        </ul>
+      </div>
     </div>
+
+    <hr class="my-4">
+
+    <!-- Bottom Footer -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="d-flex gap-3 mb-3 mb-md-0">
+          <a href="#" class="text-muted text-decoration-none">
+            <i class="fab fa-instagram fs-5"></i>
+          </a>
+          <a href="#" class="text-muted text-decoration-none">
+            <i class="fab fa-linkedin fs-5"></i>
+          </a>
+          <a href="#" class="text-muted text-decoration-none">
+            <i class="fab fa-facebook fs-5"></i>
+          </a>
+          <a href="#" class="text-muted text-decoration-none">
+            <i class="fab fa-twitter fs-5"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="text-muted mb-0">
+          <i class="far fa-copyright me-1"></i> 2024 Wanderlust, Inc. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </div>
 </footer>
+
+<style>
+.footer {
+  font-size: 0.9rem;
+}
+
+.footer a {
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #dc3545 !important;
+}
+
+.footer .social-icons a {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    text-align: center;
+  }
+  
+  .footer .col-md-6:last-child {
+    margin-top: 1rem;
+  }
+}
+</style>
